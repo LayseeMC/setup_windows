@@ -131,8 +131,20 @@ if (Test-Path $stuckRects3Path) {
 }
 
 # --- 4. アプリケーションのインストール ---
-Write-Host "MiniFuse Control Centerをダウンロード・インストール中..."
-# Wingetを使用してMiniFuse Control Centerをインストール
-winget install --id Arturia.MiniFuseControlCenter --silent --accept-package-agreements --accept-source-agreements
+Write-Host "アプリケーションのインストールを開始します..." -ForegroundColor Yellow
+
+# インストールするアプリのリスト (Winget ID)
+$appsToInstall = @(
+    "Arturia.MiniFuseControlCenter",
+    "Nvidia.NvidiaApp",
+    "Logitech.GHUB"
+)
+
+foreach ($appId in $appsToInstall) {
+    Write-Host "Installing: $appId" -ForegroundColor Cyan
+    # --accept-package-agreements: ライセンス条項に自動同意
+    # --accept-source-agreements: ソース条項に自動同意
+    winget install --id $appId --silent --accept-package-agreements --accept-source-agreements --error-action silentlycontinue
+}
 
 Write-Host "すべてのセットアップが完了しました。設定を完全に反映させるため、コンピュータを再起動してください。" -ForegroundColor Green
